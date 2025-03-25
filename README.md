@@ -52,4 +52,7 @@ export default tseslint.config({
   },
 })
 ```
+<<<<<<< HEAD
 >>>>>>> 09a6852 (Initial commit)
+=======
+>>>>>>> 09a68520b21c74aa68c669eb249764cd7dfbf03e
