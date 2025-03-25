@@ -1,14 +1,7 @@
-<<<<<<< HEAD
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Calendar, Video, MessageSquare, FileText, Pill,
-=======
-import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {
-  Calendar, Clock, Video, MessageSquare, FileText, Pill,
->>>>>>> 09a68520b21c74aa68c669eb249764cd7dfbf03e
   CreditCard, MapPin, Activity, Users, Bell, UserCircle,
   LogOut, ChevronLeft, Settings, Heart, Stethoscope, Clipboard, Guitar as Hospital, AlertCircle
 } from 'lucide-react';

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { useState, useEffect, useRef } from 'react';
-=======
-import React, { useState, useEffect, useRef } from 'react';
->>>>>>> 09a68520b21c74aa68c669eb249764cd7dfbf03e
 import { useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, Users, Calendar, CreditCard, 

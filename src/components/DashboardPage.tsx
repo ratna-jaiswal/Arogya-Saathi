@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-import React from 'react';
->>>>>>> 09a68520b21c74aa68c669eb249764cd7dfbf03e
 import { useParams } from 'react-router-dom';
 import PatientDashboard from './dashboards/PatientDashboard';
 import DoctorDashboard from './dashboards/DoctorDashboard';
