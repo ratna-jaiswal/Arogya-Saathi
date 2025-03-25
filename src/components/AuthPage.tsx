@@ -369,7 +369,7 @@ function AuthPage() {
           <div className="w-full max-w-4xl">
             <div className="text-center mb-12">
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
-                Welcome to MediConnect
+                Welcome to Arogya Saathi
               </h1>
               <p className="text-lg md:text-xl text-gray-600">
                 Choose your role to proceed
