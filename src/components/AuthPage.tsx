@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserRound, Stethoscope, Building2, ArrowLeft } from 'lucide-react';
 
 type Role = 'patient' | 'doctor' | 'hospital' | null;
 type AuthMode = 'login' | 'signup';
 
-type BloodGroup = 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
-type Gender = 'male' | 'female' | 'other';
+// type BloodGroup = 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
+// type Gender = 'male' | 'female' | 'other';
 
 function AuthPage() {
   const [selectedRole, setSelectedRole] = useState<Role>(null);
