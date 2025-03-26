@@ -1,58 +1,72 @@
-# React + TypeScript + Vite
+# Arogya Saathi - Healthcare Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+Arogya Saathi is an innovative healthcare platform designed to bridge the gap in medical services for rural and underserved communities. It aims to overcome barriers like distance, lack of medical professionals, and limited health literacy. The platform integrates multiple features to enhance accessibility, improve health outcomes, and provide an efficient healthcare experience for patients.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Key Features:
 
-## Expanding the ESLint configuration
+- **Multilingual AI Chatbot:** Supports disease prediction, appointment booking, health advice, and personalized diet recommendations.
+- **Telemedicine (Planned):** Future integration for video consultations with healthcare providers.
+- **Medical Record Management (Planned):** Will provide patients easy access to their records while ensuring data security.
+- **Hospital Locator:** Finds nearby hospitals based on the patient’s location.
+- **Automated Notifications:** Reminds patients about appointments and health tips.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Arogya Saathi leverages a modern, scalable tech stack to ensure performance, security, and user-friendliness.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- **Frontend:** React.js with Tailwind CSS (responsive, intuitive user interface)
+- **AI Chatbot:** 
+  - Base Models: ClinicalBERT, ClinicalCamel (Hugging Face)
+  - Enhanced with: Retrieval Augmented Generation (RAG)
+  - Orchestration: LangChain multi-agent framework
+  - Custom Knowledge Integration: Medical data sources
+- **Authentication (Planned):** Firebase
+- **Future Backend (Planned):** Node.js with Express
+- **Database (Planned):** PostgreSQL with Prisma ORM
+- **DevOps (Planned):** Docker (containerization), GitHub Actions (CI/CD), AWS EC2 (hosting)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## How to Run the Project
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
-<<<<<<< HEAD
->>>>>>> 09a6852 (Initial commit)
-=======
->>>>>>> 09a68520b21c74aa68c669eb249764cd7dfbf03e
+### Prerequisites
+Ensure you have the following installed:
+- Node.js (v16+)
+- npm or yarn
+
+### Setup and Installation
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd arogya-saathi
+   ```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+3. **Setup environment variables:**
+   Create a `.env` file if needed for future backend integration.
+
+4. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+   This launches the app in development mode at `http://localhost:5173`.
+
+5. **Build for production:**
+   ```bash
+   npm run build
+   ```
+
+### Notes
+- This is a frontend-only version for now. Backend integration and additional features are planned for future updates.
+
+## Future Enhancements
+- **Backend API** to handle appointments, records, and communication.
+- **Offline mode** for rural areas with intermittent internet.
+- **AI diagnostics expansion** for more accurate disease prediction.
+- **Integration with wearable devices** to monitor real-time health data.
+
+---
+Arogya Saathi — *Your Health, Our Priority!*
+
