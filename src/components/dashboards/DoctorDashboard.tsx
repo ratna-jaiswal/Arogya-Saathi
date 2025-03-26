@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Calendar, Clock, Video, MessageSquare, FileText, 
-  Stethoscope, CreditCard, Brain, Bell, UserCircle,
-  ChevronLeft, Settings, LogOut
+  Stethoscope, CreditCard, Users, Bell, UserCircle,
+  ChevronLeft, Settings, LogOut, Menu
 } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -19,7 +19,9 @@ const DoctorDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
   const notificationRef = useRef<HTMLDivElement>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
   const [appointments] = useState<Appointment[]>([
     { id: 1, patientName: "John Smith", date: new Date(2024, 2, 25, 14, 30), type: 'Video Consultation' },
     { id: 2, patientName: "Mary Johnson", date: new Date(2024, 2, 25, 16, 0), type: 'In-Person' }
@@ -29,6 +31,9 @@ const DoctorDashboard: React.FC = () => {
     const handleClickOutside = (event: MouseEvent) => {
       if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
         setShowNotifications(false);
+      }
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+        setShowSidebar(false);
       }
     };
 
@@ -249,31 +254,33 @@ const DoctorDashboard: React.FC = () => {
     </div>
   );
 
-  const renderAIAssistant = () => (
+  const renderCommunity = () => (
     <div className="bg-white p-6 rounded-xl shadow-sm">
-      <h2 className="text-xl font-semibold mb-6">AI Assistant</h2>
-      <div className="space-y-4">
-        <div className="border p-4 rounded-lg">
-          <h3 className="font-medium mb-2">Symptom Checker</h3>
-          <textarea
-            className="w-full p-2 border rounded"
-            rows={4}
-            placeholder="Describe patient symptoms..."
-          ></textarea>
-          <button className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-            Analyze Symptoms
-          </button>
-        </div>
-        <div className="border p-4 rounded-lg">
-          <h3 className="font-medium mb-2">Drug Interaction Checker</h3>
+      <h2 className="text-xl font-semibold mb-6">Medical Community</h2>
+      <div className="space-y-6">
+        <div className="flex justify-between">
           <input
             type="text"
-            className="w-full p-2 border rounded mb-2"
-            placeholder="Enter medications..."
+            placeholder="Search discussions..."
+            className="px-4 py-2 border rounded-lg w-64"
           />
-          <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-            Check Interactions
+          <button className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+            Start Discussion
           </button>
+        </div>
+        <div className="space-y-4">
+          <div className="border p-4 rounded-lg">
+            <div className="flex items-center gap-3 mb-2">
+              <Users className="text-blue-500" />
+              <h3 className="font-medium">Medical Research Group</h3>
+            </div>
+            <p className="text-sm text-gray-600 mb-4">
+              Discuss latest research and share expertise with peers.
+            </p>
+            <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+              Join Group
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -281,7 +288,7 @@ const DoctorDashboard: React.FC = () => {
 
   const TabButton = ({ icon, label, id }: { icon: React.ReactNode; label: string; id: string }) => (
     <button
-      onClick={() => setActiveTab(id)}
+      onClick={() => {setActiveTab(id); setShowSidebar(false);}}
       className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
         activeTab === id ? 'bg-blue-500 text-white' : 'hover:bg-gray-100'
       }`}
@@ -304,6 +311,12 @@ const DoctorDashboard: React.FC = () => {
               >
                 <ChevronLeft size={24} />
               </button>
+              <button
+                className="md:hidden p-2 hover:bg-gray-100 rounded-lg"
+                onClick={() => setShowSidebar(!showSidebar)}
+              >
+                <Menu size={24} />
+              </button>
               <h1 className="text-xl font-semibold text-gray-800">Doctor Dashboard</h1>
             </div>
             <div className="flex items-center gap-4">
@@ -321,8 +334,15 @@ const DoctorDashboard: React.FC = () => {
                     <div className="px-4 py-2 border-b border-gray-100">
                       <h3 className="font-semibold">Notifications</h3>
                     </div>
-                    <div className="px-4 py-2">
-                      <p className="text-sm text-gray-600">No new notifications</p>
+                    <div className="space-y-4 p-4">
+                      <div className="bg-blue-50 rounded-lg border-l-4 border-blue-500 p-3">
+                        <p className="text-sm">New appointment scheduled at 2:30 PM</p>
+                        <p className="text-xs text-gray-500 mt-1">1 hour ago</p>
+                      </div>
+                      <div className="bg-gray-50 rounded-lg p-3">
+                        <p className="text-sm">Patient message received</p>
+                        <p className="text-xs text-gray-500 mt-1">2 hours ago</p>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -363,7 +383,12 @@ const DoctorDashboard: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">
           {/* Sidebar */}
-          <div className="w-full md:w-64 bg-white rounded-xl shadow-sm p-4">
+          <div
+            ref={sidebarRef}
+            className={`fixed md:static inset-y-0 left-0 z-50 w-64 bg-white rounded-xl shadow-sm p-4 transform transition-transform duration-300 md:translate-x-0 ${
+              showSidebar ? 'translate-x-0' : '-translate-x-full'
+            }`}
+          >
             <div className="flex flex-col gap-2">
               <TabButton icon={<UserCircle size={20} />} label="Overview" id="overview" />
               <TabButton icon={<Calendar size={20} />} label="Appointments" id="appointments" />
@@ -372,9 +397,15 @@ const DoctorDashboard: React.FC = () => {
               <TabButton icon={<FileText size={20} />} label="Medical Records" id="records" />
               <TabButton icon={<Stethoscope size={20} />} label="Prescriptions" id="prescriptions" />
               <TabButton icon={<CreditCard size={20} />} label="Earnings" id="earnings" />
-              <TabButton icon={<Brain size={20} />} label="AI Assistant" id="ai" />
+              <TabButton icon={<Users size={20} />} label="Community" id="community" />
             </div>
           </div>
+          {showSidebar && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-50 md:hidden"
+              onClick={() => setShowSidebar(false)}
+            />
+          )}
 
           {/* Main Content */}
           <div className="flex-1">
@@ -385,7 +416,7 @@ const DoctorDashboard: React.FC = () => {
             {activeTab === 'records' && renderMedicalRecords()}
             {activeTab === 'prescriptions' && renderPrescriptions()}
             {activeTab === 'earnings' && renderEarnings()}
-            {activeTab === 'ai' && renderAIAssistant()}
+            {activeTab === 'community' && renderCommunity()}
             {activeTab === 'profile' && (
               <div className="bg-white p-6 rounded-xl shadow-sm">
                 <h2 className="text-xl font-semibold mb-6">Profile Settings</h2>

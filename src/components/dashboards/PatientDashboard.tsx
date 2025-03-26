@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Calendar, Video, MessageSquare, FileText, Pill,
-  CreditCard, MapPin, Activity, Users, Bell, UserCircle,
-  LogOut, ChevronLeft, Settings, Heart, Stethoscope, Clipboard, Guitar as Hospital, AlertCircle
+  CreditCard, MapPin, Activity, Brain, Bell, UserCircle,
+  LogOut, ChevronLeft, Settings, Heart, Stethoscope, Clipboard, Guitar as Hospital, AlertCircle, Menu
 } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -19,7 +19,9 @@ const PatientDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
   const notificationRef = useRef<HTMLDivElement>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
   const [appointments] = useState<Appointment[]>([
     { id: 1, doctorName: "Dr. Sarah Smith", date: new Date(2024, 2, 25, 14, 30), type: 'upcoming' },
     { id: 2, doctorName: "Dr. John Doe", date: new Date(2024, 2, 20, 10, 0), type: 'past' }
@@ -29,6 +31,9 @@ const PatientDashboard: React.FC = () => {
     const handleClickOutside = (event: MouseEvent) => {
       if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
         setShowNotifications(false);
+      }
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+        setShowSidebar(false);
       }
     };
 
@@ -156,8 +161,8 @@ const PatientDashboard: React.FC = () => {
                   <td className="px-6 py-4">Video Consultation</td>
                   <td className="px-6 py-4">
                     <span className={`px-2 py-1 rounded-full text-sm ${apt.type === 'upcoming'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-gray-100 text-gray-800'
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-gray-100 text-gray-800'
                       }`}>
                       {apt.type === 'upcoming' ? 'Scheduled' : 'Completed'}
                     </span>
@@ -467,77 +472,31 @@ const PatientDashboard: React.FC = () => {
   );
 
 
-  const renderCommunity = () => (
+  const renderAIAssistant = () => (
     <div className="bg-white p-6 rounded-xl shadow-sm">
-      <h2 className="text-xl font-semibold mb-6">Health Community</h2>
-      <div className="space-y-6">
-        <div className="flex justify-between">
+      <h2 className="text-xl font-semibold mb-6">AI Assistant</h2>
+      <div className="space-y-4">
+        <div className="border p-4 rounded-lg">
+          <h3 className="font-medium mb-2">Symptom Checker</h3>
+          <textarea
+            className="w-full p-2 border rounded"
+            rows={4}
+            placeholder="Describe your symptoms..."
+          ></textarea>
+          <button className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+            Analyze Symptoms
+          </button>
+        </div>
+        <div className="border p-4 rounded-lg">
+          <h3 className="font-medium mb-2">Health Tips</h3>
           <input
             type="text"
-            placeholder="Search discussions..."
-            className="px-4 py-2 border rounded-lg w-64"
+            className="w-full p-2 border rounded mb-2"
+            placeholder="Ask for health advice..."
           />
-          <button className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-            Start Discussion
+          <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+            Get Advice
           </button>
-        </div>
-        <div className="space-y-4">
-          <div className="border p-4 rounded-lg">
-            <div className="flex items-center gap-3 mb-2">
-              <Users className="text-blue-500" />
-              <h3 className="font-medium">Diabetes Support Group</h3>
-            </div>
-            <p className="text-sm text-gray-600 mb-4">
-              Join others in discussing management techniques and sharing experiences.
-            </p>
-            <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-              Join Group
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-
-  const renderNotifications = () => (
-    <div className="bg-white p-6 rounded-xl shadow-sm">
-      <h2 className="text-xl font-semibold mb-6">Notifications</h2>
-      <div className="space-y-4">
-        <div className="flex justify-between mb-4">
-          <div className="flex gap-2">
-            <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-              All
-            </button>
-            <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
-              Unread
-            </button>
-          </div>
-          <button className="text-blue-600 hover:text-blue-800">
-            Mark all as read
-          </button>
-        </div>
-        <div className="space-y-4">
-          <div className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
-            <div className="flex items-center gap-3 mb-2">
-              <AlertCircle className="text-blue-500" />
-              <h3 className="font-medium">Appointment Reminder</h3>
-            </div>
-            <p className="text-sm text-gray-600">
-              Your appointment with Dr. Sarah Smith is tomorrow at 2:30 PM.
-            </p>
-            <p className="text-xs text-gray-500 mt-2">2 hours ago</p>
-          </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <div className="flex items-center gap-3 mb-2">
-              <FileText className="text-gray-500" />
-              <h3 className="font-medium">Lab Results Available</h3>
-            </div>
-            <p className="text-sm text-gray-600">
-              Your recent lab test results are now available.
-            </p>
-            <p className="text-xs text-gray-500 mt-2">1 day ago</p>
-          </div>
         </div>
       </div>
     </div>
@@ -545,7 +504,7 @@ const PatientDashboard: React.FC = () => {
 
   const TabButton = ({ icon, label, id }: { icon: React.ReactNode; label: string; id: string }) => (
     <button
-      onClick={() => setActiveTab(id)}
+      onClick={() => { setActiveTab(id); setShowSidebar(false); }}
       className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${activeTab === id ? 'bg-blue-500 text-white' : 'hover:bg-gray-100'
         }`}
     >
@@ -567,6 +526,12 @@ const PatientDashboard: React.FC = () => {
               >
                 <ChevronLeft size={24} />
               </button>
+              <button
+                className="md:hidden p-2 hover:bg-gray-100 rounded-lg"
+                onClick={() => setShowSidebar(!showSidebar)}
+              >
+                <Menu size={24} />
+              </button>
               <h1 className="text-xl font-semibold text-gray-800">Patient Dashboard</h1>
             </div>
             <div className="flex items-center gap-4">
@@ -584,8 +549,27 @@ const PatientDashboard: React.FC = () => {
                     <div className="px-4 py-2 border-b border-gray-100">
                       <h3 className="font-semibold">Notifications</h3>
                     </div>
-                    <div className="px-4 py-2">
-                      <p className="text-sm text-gray-600">No new notifications</p>
+                    <div className="space-y-4 p-4">
+                      <div className="bg-blue-50 rounded-lg border-l-4 border-blue-500 p-3">
+                        <div className="flex items-center gap-2 mb-2">
+                          <AlertCircle className="text-blue-500" />
+                          <h3 className="font-medium">Appointment Reminder</h3>
+                        </div>
+                        <p className="text-sm text-gray-600">
+                          Your appointment with Dr. Sarah Smith is tomorrow at 2:30 PM.
+                        </p>
+                        <p className="text-xs text-gray-500 mt-2">2 hours ago</p>
+                      </div>
+                      <div className="bg-gray-50 rounded-lg p-3">
+                        <div className="flex items-center gap-2 mb-2">
+                          <FileText className="text-gray-500" />
+                          <h3 className="font-medium">Lab Results Available</h3>
+                        </div>
+                        <p className="text-sm text-gray-600">
+                          Your recent lab test results are now available.
+                        </p>
+                        <p className="text-xs text-gray-500 mt-2">1 day ago</p>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -626,7 +610,11 @@ const PatientDashboard: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">
           {/* Sidebar */}
-          <div className="w-full md:w-64 bg-white rounded-xl shadow-sm p-4">
+          <div
+            ref={sidebarRef}
+            className={`fixed md:static inset-y-0 left-0 z-50 w-64 bg-white rounded-xl shadow-sm p-4 transform transition-transform duration-300 md:translate-x-0 ${showSidebar ? 'translate-x-0' : '-translate-x-full'
+              }`}
+          >
             <div className="flex flex-col gap-2">
               <TabButton icon={<UserCircle size={20} />} label="Overview" id="overview" />
               <TabButton icon={<Calendar size={20} />} label="Appointments" id="appointments" />
@@ -637,10 +625,16 @@ const PatientDashboard: React.FC = () => {
               <TabButton icon={<CreditCard size={20} />} label="Billing" id="billing" />
               <TabButton icon={<MapPin size={20} />} label="Hospitals" id="hospitals" />
               <TabButton icon={<Activity size={20} />} label="Vitals" id="vitals" />
-              <TabButton icon={<Users size={20} />} label="Community" id="community" />
-              <TabButton icon={<Bell size={20} />} label="Notifications" id="notifications" />
+              <TabButton icon={<Brain size={20} />} label="AI Assistant" id="ai" />
             </div>
           </div>
+          {/* Overlay for mobile */}
+          {showSidebar && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-50 md:hidden"
+              onClick={() => setShowSidebar(false)}
+            />
+          )}
 
           {/* Main Content */}
           <div className="flex-1">
@@ -653,8 +647,7 @@ const PatientDashboard: React.FC = () => {
             {activeTab === 'billing' && renderBilling()}
             {activeTab === 'hospitals' && renderHospitals()}
             {activeTab === 'vitals' && renderVitals()}
-            {activeTab === 'community' && renderCommunity()}
-            {activeTab === 'notifications' && renderNotifications()}
+            {activeTab === 'ai' && renderAIAssistant()}
             {activeTab === 'profile' && (
               <div className="bg-white p-6 rounded-xl shadow-sm">
                 <h2 className="text-xl font-semibold mb-6">Profile Settings</h2>

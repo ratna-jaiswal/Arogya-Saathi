@@ -4,7 +4,7 @@ import {
   LayoutDashboard, Users, Calendar, CreditCard, 
   FileText, Building2, Headphones, Star, Bell, 
   Ambulance, UserCircle, ChevronLeft, Settings,
-  LogOut
+  LogOut, Menu
 } from 'lucide-react';
 
 const HospitalDashboard: React.FC = () => {
@@ -12,12 +12,17 @@ const HospitalDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
   const notificationRef = useRef<HTMLDivElement>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
         setShowNotifications(false);
+      }
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+        setShowSidebar(false);
       }
     };
 
@@ -390,7 +395,7 @@ const HospitalDashboard: React.FC = () => {
 
   const TabButton = ({ icon, label, id }: { icon: React.ReactNode; label: string; id: string }) => (
     <button
-      onClick={() => setActiveTab(id)}
+      onClick={() => {setActiveTab(id); setShowSidebar(false);}}
       className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
         activeTab === id ? 'bg-blue-500 text-white' : 'hover:bg-gray-100'
       }`}
@@ -413,6 +418,12 @@ const HospitalDashboard: React.FC = () => {
               >
                 <ChevronLeft size={24} />
               </button>
+              <button
+                className="md:hidden p-2 hover:bg-gray-100 rounded-lg"
+                onClick={() => setShowSidebar(!showSidebar)}
+              >
+                <Menu size={24} />
+              </button>
               <h1 className="text-xl font-semibold text-gray-800">Hospital Dashboard</h1>
             </div>
             <div className="flex items-center gap-4">
@@ -430,8 +441,15 @@ const HospitalDashboard: React.FC = () => {
                     <div className="px-4 py-2 border-b border-gray-100">
                       <h3 className="font-semibold">Notifications</h3>
                     </div>
-                    <div className="px-4 py-2">
-                      <p className="text-sm text-gray-600">No new notifications</p>
+                    <div className="space-y-4 p-4">
+                      <div className="bg-red-50 rounded-lg border-l-4 border-red-500 p-3">
+                        <p className="text-sm">Emergency case reported</p>
+                        <p className="text-xs text-gray-500 mt-1">30 mins ago</p>
+                      </div>
+                      <div className="bg-blue-50 rounded-lg p-3">
+                        <p className="text-sm">New doctor registration pending</p>
+                        <p className="text-xs text-gray-500 mt-1">1 hour ago</p>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -472,7 +490,12 @@ const HospitalDashboard: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">
           {/* Sidebar */}
-          <div className="w-full md:w-64 bg-white rounded-xl shadow-sm p-4">
+          <div
+            ref={sidebarRef}
+            className={`fixed md:static inset-y-0 left-0 z-50 w-64 bg-white rounded-xl shadow-sm p-4 transform transition-transform duration-300 md:translate-x-0 ${
+              showSidebar ? 'translate-x-0' : '-translate-x-full'
+            }`}
+          >
             <div className="flex flex-col gap-2">
               <TabButton icon={<UserCircle size={20} />} label="Overview" id="overview" />
               <TabButton icon={<Users size={20} />} label="Doctor Management" id="doctors" />
@@ -485,7 +508,13 @@ const HospitalDashboard: React.FC = () => {
               <TabButton icon={<Ambulance size={20} />} label="Emergency" id="emergency" />
             </div>
           </div>
-
+          {showSidebar && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-50 md:hidden"
+              onClick={() => setShowSidebar(false)}
+            />
+          )}
+          
           {/* Main Content */}
           <div className="flex-1">
             {activeTab === 'overview' && renderOverview()}
